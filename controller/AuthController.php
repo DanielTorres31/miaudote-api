@@ -2,7 +2,7 @@
 require_once "../enum/EnumAuth.php";
 require_once "../enum/EnumUsuario.php";
 
-class Auth{
+class AuthController {
    
  public function CriarSessao($p_Email, $p_Senha) {
         include "Conexao.php";
@@ -87,9 +87,9 @@ class Auth{
 
     public function ChecarPermissao($p_PermissaoNecessaria){
         require_once "Auth.php";
-        $Auth = new Auth();
+        $AuthController = new AuthController();
         
-        $sessao = $Auth->ChecarSessao();
+        $sessao = $AuthController->ChecarSessao();
         if(!$sessao["sucesso"]){
             return $sessao;
         }

@@ -1,21 +1,21 @@
 <?php
-require_once "../controller/Auth.php";
+require_once "../controller/AuthController.php";
 header("Content-type: application/json");
 
-$Auth = new Auth();
+$AuthController = new AuthController();
 
 $acao = $_GET["acao"];
 if($acao == "CriarSessao"){
     $email = $_POST['email'];
     $senha = $_POST['senha'];
     
-    echo json_encode($Auth->CriarSessao($email, $senha));
+    echo json_encode($AuthController->CriarSessao($email, $senha));
 }
 
 if($acao == "ChecarSessao"){
-    echo json_encode($Auth->ChecarSessao());
+    echo json_encode($AuthController->ChecarSessao());
 }
 
 if($acao == "EncerrarSessao"){
-    echo json_encode($Auth->EncerrarSessao());
+    echo json_encode($AuthController->EncerrarSessao());
 }
