@@ -5,13 +5,13 @@ ini_set("display_errors", 0);
 
 require_once "../enum/EnumUsuario.php";
 
-class Usuario {
+class UsuarioController {
 
     public function CriarUsuario($p_NomeUsuario, $p_EmailUsuario, $p_TipoUsuario, $p_DesSenha, $p_DesSenhaRepetida) {
         require_once "Usuario.php";
         require_once "Conexao.php";
 
-        $Usuario = new Usuario();
+        $UsuarioController = new UsuarioController();
 
         $erro = false;
         $mensagem = null;
@@ -28,7 +28,7 @@ class Usuario {
         } elseif ($p_DesSenhaRepetida !== $p_DesSenha) {
             $erro = true;
             $mensagem = ERRO_REPETIR_SENHA;
-        } elseif ($Usuario->VerificarEmail($p_EmailUsuario)) {
+        } elseif ($UsuarioController->VerificarEmail($p_EmailUsuario)) {
             $erro = true;
             $mensagem = ERRO_EMAIL_EXISTE;
         }

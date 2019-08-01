@@ -1,9 +1,9 @@
 <?php
-require_once "../controller/Instituicao.php";
+require_once "../controller/InstituicaoController.php";
 require_once "../enum/EnumInstituicao.php";
 header("Content-type: application/json");
 
-$Instituicao = new Instituicao();
+$InstituicaoController = new InstituicaoController();
 
 $acao = $_GET["acao"];
 if($acao == "CriarInstituicao"){
@@ -16,7 +16,7 @@ if($acao == "CriarInstituicao"){
     $Email = $dados->email;
     $TipoInstituicao = $dados->tipo;
     $Cidade = $dados->cidade;
-    echo json_encode($Instituicao->CriarInstituicao($NomeInstituicao, $Telefone, $Email, $TipoInstituicao, $Cidade));
+    echo json_encode($InstituicaoController->CriarInstituicao($NomeInstituicao, $Telefone, $Email, $TipoInstituicao, $Cidade));
 }
 
 if($acao == "DeletarInstituicao"){
@@ -25,7 +25,7 @@ if($acao == "DeletarInstituicao"){
     $dados = $instituicao->dados[0];
     $InstituicaoPK = $dados->COD_INSTITUICAO;
     
-    echo json_encode($Instituicao->ExcluirInstituicao($InstituicaoPK));
+    echo json_encode($InstituicaoController->ExcluirInstituicao($InstituicaoPK));
 }
 
 if($acao == "AlterarInstituicao"){
@@ -34,15 +34,15 @@ if($acao == "AlterarInstituicao"){
    $Telefone = "(31)5555-5555";
    $Email = "fdsfsldfdfdf@gmail.com";
    $TipoInstituicao = "P"; 
-    echo json_encode($Instituicao->AlterarInstituicao($InstituicaoPK, $NomeInstituicao, $Telefone, $Email, $TipoInstituicao));
+    echo json_encode($InstituicaoController->AlterarInstituicao($InstituicaoPK, $NomeInstituicao, $Telefone, $Email, $TipoInstituicao));
 }
 
 if($acao == "GetInstituicao"){
     $pagina = $_GET["Pagina"];
-    echo json_encode($Instituicao->GetInstituicao($pagina));
+    echo json_encode($InstituicaoController->GetInstituicao($pagina));
 }
 
 if($acao == "GetCidades"){
-    echo json_encode($Instituicao->GetCidades());
+    echo json_encode($InstituicaoController->GetCidades());
 }
 

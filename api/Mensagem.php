@@ -1,8 +1,8 @@
 <?php
-require_once "../controller/Mensagem.php";
+require_once "../controller/MensagemController.php";
 header("Content-type: application/json");
 
-$Mensagem = new Mensagem();
+$MensagemController = new MensagemController();
 
 $acao = $_GET["acao"];
 if($acao == "EnviarMensagem"){
@@ -10,5 +10,5 @@ if($acao == "EnviarMensagem"){
     $Email = "henrique@gmail.com";
     $MensagemUsuario = "teste mensagem";
     
-    echo json_encode($Mensagem->EnviarMensagem($NomUsuario, $Email, $MensagemUsuario));
+    echo json_encode($MensagemController->EnviarMensagem($NomUsuario, $Email, $MensagemUsuario));
 }

@@ -3,7 +3,7 @@ require_once "../enum/EnumAnimal.php";
 header("Content-type: application/json");
 
 
-class Animal {
+class AnimalController {
 
     public function cadastrarAnimal($p_NomeAnimal, $p_DesObservacao, $p_IdadeAnimal, $p_PorteAnimal, $p_Sexo, $p_Vacina, $p_Temperamento, $p_Instituicao, $p_Especie, $p_IndCastrado, $p_foto ) {
        require_once "Conexao.php";

@@ -1,9 +1,9 @@
 <?php
 
-require_once "../controller/Usuario.php";
+require_once "../controller/UsuarioController.php";
 header("Content-type: application/json");
 
-$Usuario = new Usuario();
+$UsuarioController = new UsuarioController();
 
 $acao = $_GET["acao"];
 if ($acao == "CriarUsuario") {
@@ -23,17 +23,17 @@ if ($acao == "CriarUsuario") {
     //  $SenhaRepetida = "123";
     //  $TipoUsuario = "A";
 
-    echo json_encode($Usuario->CriarUsuario($NomeUsuario, $Email, $TipoUsuario, $Senha, $SenhaRepetida));
+    echo json_encode($UsuarioController->CriarUsuario($NomeUsuario, $Email, $TipoUsuario, $Senha, $SenhaRepetida));
 }
 
 if ($acao == "GetUsuarios") {
     $pagina = $_GET["Pagina"];
-    echo json_encode($Usuario->GetUsuarios($pagina));
+    echo json_encode($UsuarioController->GetUsuarios($pagina));
 }
 
 if ($acao == "GetUsuarioPorPK") {
     $usuarioPK = $_GET["COD_USUARIO"];
-    echo json_encode($Usuario->GetUsuarioPorPK($usuarioPK));
+    echo json_encode($UsuarioController->GetUsuarioPorPK($usuarioPK));
 }
 
 if ($acao == "DeletarUsuario") {
@@ -42,7 +42,7 @@ if ($acao == "DeletarUsuario") {
     $dados = $usuario->dados[0];
     
     $usuarioPK = $dados->COD_USUARIO;
-    echo json_encode($Usuario->DeletarUsuario($usuarioPK));
+    echo json_encode($UsuarioController->DeletarUsuario($usuarioPK));
 }
 
 if ($acao == "AlterarSenhaUsuario") {
@@ -55,5 +55,5 @@ if ($acao == "AlterarSenhaUsuario") {
     $Senha = $dados->DES_SENHA;
     $SenhaRepetida = $dados->DES_SENHA_REPETIDA;
     
-    echo json_encode($Usuario->AlterarSenhaUsuario($UsuarioPK, $SenhaAntiga, $Senha, $SenhaRepetida));
+    echo json_encode($UsuarioController->AlterarSenhaUsuario($UsuarioPK, $SenhaAntiga, $Senha, $SenhaRepetida));
 }

@@ -1,7 +1,8 @@
 <?php
 require_once "../enum/EnumMensagem.php";
 
-class Mensagem{
+class MensagemController {
+
     public function EnviarMensagem($p_NomUsuario, $p_Email, $p_Mensagem){
         require_once "Conexao.php";
         $erro = false;

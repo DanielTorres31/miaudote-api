@@ -1,12 +1,13 @@
 <?php
-require_once "../controller/Animal.php";
+require_once "../controller/AnimalController.php";
 header("Content-type: application/json");
 
-$Animal = new Animal();
+$AnimalController = new AnimalController();
 
 $acao = $_GET["acao"];
 if($acao == "CadastrarAnimal") {
     $postdata = file_get_contents("php://input");
+	echo json_encode($postdata);
     $animal = json_decode($postdata);
     $dados = $animal->dados;
     
@@ -75,7 +76,7 @@ if($acao == "CadastrarAnimal") {
     // $p_Especie = '1';
     // $p_IndCastrado = "T";
     
-    echo json_encode($Animal->cadastrarAnimal($p_NomeAnimal, $p_DesObservacao, $p_IdadeAnimal, $p_PorteAnimal, $p_Sexo, $p_Vacina, $p_Temperamento, $p_Instituicao, $p_Especie, $p_IndCastrado, $p_foto));
+    echo json_encode($AnimalController->cadastrarAnimal($p_NomeAnimal, $p_DesObservacao, $p_IdadeAnimal, $p_PorteAnimal, $p_Sexo, $p_Vacina, $p_Temperamento, $p_Instituicao, $p_Especie, $p_IndCastrado, $p_foto));
 }
 
 if($acao == "ExcluirAnimal") {
@@ -85,7 +86,7 @@ if($acao == "ExcluirAnimal") {
     $dados = $animal->dados[0];
     $id = $dados->COD_ANIMAL;
     
-    echo json_encode($Animal->excluirAnimal($id));
+    echo json_encode($AnimalController->excluirAnimal($id));
 }
 
 if($acao == "AdotarAnimal") {
@@ -95,7 +96,7 @@ if($acao == "AdotarAnimal") {
     
     $id = $dados->id;
     
-    echo json_encode($Animal->AdotarAnimal($id));
+    echo json_encode($AnimalController->AdotarAnimal($id));
 }
 
 if($acao == "EditarAnimal") {
@@ -169,11 +170,11 @@ if($acao == "EditarAnimal") {
     // $p_Especie = '1';
     // $p_IndCastrado = "T";
     
-    echo json_encode($Animal->EditarAnimal($id, $p_NomeAnimal, $p_Observacao, $p_IdadeAnimal, $p_PorteAnimal, $p_Sexo, $p_Vacina, $p_Temperamento, $p_Instituicao, $p_Especie, $p_IndCastrado, $p_foto));
+    echo json_encode($AnimalController->EditarAnimal($id, $p_NomeAnimal, $p_Observacao, $p_IdadeAnimal, $p_PorteAnimal, $p_Sexo, $p_Vacina, $p_Temperamento, $p_Instituicao, $p_Especie, $p_IndCastrado, $p_foto));
 }
 
 if($acao == "BuscarTodos") {
-    echo json_encode($Animal->BuscarTodos());
+    echo json_encode($AnimalController->BuscarTodos());
 }
 
 if($acao == "BuscarPorId") {
@@ -183,12 +184,12 @@ if($acao == "BuscarPorId") {
     
     $id = $dados->id;
  
-    echo json_encode($Animal->BuscarPorId($id));
+    echo json_encode($AnimalController->BuscarPorId($id));
 }
 
 if($acao == "BuscarAdotados") {
     
-    echo json_encode($Animal->BuscarAdotados());
+    echo json_encode($AnimalController->BuscarAdotados());
 }
 
 if($acao == "BuscarImagens") {
@@ -198,7 +199,7 @@ if($acao == "BuscarImagens") {
     
     $id = $dados->id;
     
-    echo json_encode($Animal->BuscarImagens($id));
+    echo json_encode($AnimalController->BuscarImagens($id));
 }
 
 if($acao == "Filtro") {
@@ -212,7 +213,7 @@ if($acao == "Filtro") {
     $sexo = $animal->sexo;
     $idade = $animal->idade;
     
-    echo json_encode ($Animal->filtro($nome, $especie, $porte, $sexo, $idade));
+    echo json_encode ($AnimalController->filtro($nome, $especie, $porte, $sexo, $idade));
 }
 
 ?>

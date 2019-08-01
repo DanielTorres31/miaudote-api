@@ -4,7 +4,8 @@ ini_set("display_errors", 0);
 
 require_once "../enum/EnumInstituicao.php";
 
-class Instituicao{
+class InstituicaoController {
+    
     public function CriarInstituicao($p_NomeInstituicao, $p_Telefone, $p_Email, $p_TipoInstituicao, $p_Cidade){
         require_once "Conexao.php";
         $erro = false;
