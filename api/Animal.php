@@ -11,7 +11,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case PUT:
-        $id = getIdNaRequisicao($_SERVER['REQUEST_URI']);
+        $id = getIdNaRequisicao();
         echo 'PUT Animal';
         break;
     
