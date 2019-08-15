@@ -12,12 +12,13 @@ $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
     case PUT:
         $id = getIdNaRequisicao();
+        $body = getBody();
         echo 'PUT Animal';
         break;
     
     case POST:
         $body = getBody();
-        $validacao = validaBody($animal);
+        $validacao = validaBody($body);
         if($validacao->erro){
             echo json_encode($validacao);
             break;
@@ -42,46 +43,40 @@ switch ($method) {
 
 function validaBody($animal) {
     $erro = false;
-    $mensagem = null;
+    $mensagens = [];
 
     if(empty($animal->nome)) {
         $erro = true;
-        $mensagem = ERRO_NOME_OBRIGATORIO;
+        array_push($mensagens, ERRO_NOME_OBRIGATORIO);
     }
-
     if(empty($animal->idade)) {
         $erro = true;
-        $mensagem = ERRO_IDADE_OBRIGATORIO;
+        array_push($mensagens, ERRO_IDADE_OBRIGATORIO);
     }
-
     if(empty($animal->porte)) {
         $erro = true;
-        $mensagem = ERRO_PORTE_OBRIGATORIO;
+        array_push($mensagens, ERRO_PORTE_OBRIGATORIO);
     }
-
     if(empty($animal->sexo)) {
         $erro = true;
-        $mensagem = ERRO_SEXO_OBRIGATORIO;
+        array_push($mensagens, ERRO_SEXO_OBRIGATORIO);
     }
-
     if(empty($animal->instituicao)) {
         $erro = true;
-        $mensagem = ERRO_INSTITUICAO_OBRIGATORIO;
+        array_push($mensagens, ERRO_INSTITUICAO_OBRIGATORIO);
     }
-
     if(empty($animal->especie)) {
         $erro = true;
-        $mensagem = ERRO_ESPECIE_OBRIGATORIO;
+        array_push($mensagens, ERRO_ESPECIE_OBRIGATORIO);
     }
-
     if(empty($animal->castrado)) {
         $erro = true;
-        $mensagem = ERRO_CASTRADO_OBRIGATORIO;
+        array_push($mensagens, ERRO_CASTRADO_OBRIGATORIO);
     }
 
     $validacao = new stdClass();
     $validacao->erro = $erro;
-    $validacao->mensagem = $mensagem;
+    $validacao->mensagens = $mensagens;
     return $validacao;
 }
 
