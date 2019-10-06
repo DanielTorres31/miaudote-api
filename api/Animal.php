@@ -23,7 +23,7 @@ switch ($method) {
             echo json_encode($validacao);
             break;
         }
-        $resposta = $animalController->cadastrarAnimal($animal);
+        $resposta = $animalController->cadastrarAnimal($body);
         echo json_encode($resposta);
         break;
     
