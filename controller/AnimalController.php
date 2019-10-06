@@ -32,7 +32,7 @@ class AnimalController {
             
             $id = $this->buscarUltimoId();
             
-            $this->uploadImagem($animal->foto);
+            $this->uploadImagem($id, $animal->foto);
             
             return criaRetornoSucesso(SUCESSO_ANIMAL_CRIADO);
         } catch(PDOException $e){
@@ -125,7 +125,7 @@ class AnimalController {
         $sucesso=false;
         $mensagem=null;
         
-        $retornarImagem = 'ds';
+        $retornarImagem = $_GET['retornarImagem'];
         
         if($retornarImagem == 'T') {
 
@@ -146,19 +146,17 @@ class AnimalController {
         
                 $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-                foreach($lista as $key => $value) {
-                    return $value['BIN_FOTO'];
-                    $lista[$key]['BIN_FOTO'] = "data:image/" . $value['TIP_FOTO']
-                         .$value['BIN_FOTO'];
+                // foreach($lista as $key => $value) {
+                //     return $value['BIN_FOTO'];
+                //     $lista[$key]['BIN_FOTO'] = "data:image/" . $value['TIP_FOTO']
+                //          .$value['BIN_FOTO'];
+                // }
+
+                if(empty($lista)){
+                    return criaRetornoErro(ERRO_NENHUM_ANIMAL);
                 }
                 
-                if(empty($lista)){
-                    return array("sucesso"=>false,
-                    "mensagem"=>ERRO_NENHUM_ANIMAL."Erro:".$conn->error,);
-                }
-
-                return array("sucesso"=>true,
-                    "data"=>$lista);
+                return criaRetornoSucessoComDados($lista);
 
         }
         else {
@@ -176,7 +174,7 @@ class AnimalController {
                 $stmt->execute();
                 
                 $animais = array();
-        
+                
                 while($row = $stmt->fetch(PDO::FETCH_OBJ)){
                     $animais[] = $row;
                 }
