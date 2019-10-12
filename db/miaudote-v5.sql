@@ -49,31 +49,6 @@ CREATE TABLE `ANIMAL` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `cidade`
---
-
-CREATE TABLE `CIDADE` (
-  `COD_CIDADE` int(11) NOT NULL,
-  `NOM_CIDADE` varchar(100) DEFAULT NULL,
-  `ESTADO_COD_ESTADO` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `cidade`
---
-
-INSERT INTO `CIDADE` (`COD_CIDADE`, `NOM_CIDADE`, `ESTADO_COD_ESTADO`) VALUES
-(1, 'Belo Horizonte', 1),
-(2, 'Contagem', 1),
-(3, 'Betim', 1),
-(4, 'Lagoa Santa', 1),
-(5, 'Ribeirao das Neves', 1),
-(6, 'Sao Paulo', 2),
-(7, 'Rio de Janeiro', 3);
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `especie`
 --
 
@@ -89,26 +64,6 @@ CREATE TABLE `ESPECIE` (
 INSERT INTO `ESPECIE` (`COD_ESPECIE`, `DES_ESPECIE`) VALUES
 (1, 'Cachorro'),
 (2, 'Gato');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `estado`
---
-
-CREATE TABLE `ESTADO` (
-  `COD_ESTADO` int(11) NOT NULL,
-  `NOM_ESTADO` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `estado`
---
-
-INSERT INTO `ESTADO` (`COD_ESTADO`, `NOM_ESTADO`) VALUES
-(1, 'Minas Gerais'),
-(2, 'Sao Paulo'),
-(3, 'Rio de Janeiro');
 
 -- --------------------------------------------------------
 
@@ -137,25 +92,17 @@ CREATE TABLE `INSTITUICAO` (
   `NUM_TELEFONE` varchar(15) DEFAULT NULL,
   `IND_TIPO_INSTITUICAO` char(1) DEFAULT NULL,
   `IND_EXCLUIDO` char(1) DEFAULT 'F',
-  `DES_EMAIL` varchar(100) DEFAULT NULL,
-  `CIDADE_COD_CIDADE` int(11) NOT NULL
+  `DES_EMAIL` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `instituicao`
 --
-/*
-INSERT INTO `INSTITUICAO` (`COD_INSTITUICAO`, `NOM_INSTITUICAO`, `NUM_TELEFONE`, `IND_TIPO_INSTITUICAO`, `IND_EXCLUIDO`, `DES_EMAIL`, `CIDADE_COD_CIDADE`) VALUES
-(1, 'Proteger', '3333', 'O', 'S', 'contato@ongproteger.com.br', 1),
-(2, 'Joao Junior', '9999', 'P', 'N', 'joaojunin@gmail.com', 1),
-(3, 'TESTE', '44444', 'O', 'S', 'TESTE@GMAIL.COM', 6),
-(9, 'Teste', '123', 'O', 'S', '123@gmail.com', 3),
-(10, 'Nixon', '123456', 'O', 'S', 'ongcabulosa@gmail.com', 2),
-(11, 'fdsfdf', '3444434', 'O', 'N', 'fdsfdf@gmail.com', 5),
-(12, 'fsdf', '(44)4444-4444', 'P', 'N', 'fsdf', 1),
-(13, 'fdfds', '(', 'P', 'S', 'fsdfdf@gmail.com', 1),
-(14, 'fdsdf', '(44)4444-44', 'O', 'N', 'fdsdf', 1);
-*/
+
+INSERT INTO `INSTITUICAO` (`COD_INSTITUICAO`, `NOM_INSTITUICAO`, `NUM_TELEFONE`, `IND_TIPO_INSTITUICAO`, `IND_EXCLUIDO`, `DES_EMAIL`) VALUES
+(1, 'Proteger', '3333', 'O', 'S', 'contato@ongproteger.com.br'),
+(2, 'Joao Junior', '9999', 'P', 'N', 'joaojunin@gmail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -208,23 +155,10 @@ ALTER TABLE `ANIMAL`
   ADD KEY `fk_ANIMAL_ESPECIE1_idx` (`ESPECIE_COD_ESPECIE`);
 
 --
--- Indexes for table `cidade`
---
-ALTER TABLE `CIDADE`
-  ADD PRIMARY KEY (`COD_CIDADE`),
-  ADD KEY `fk_CIDADE_ESTADO1_idx` (`ESTADO_COD_ESTADO`);
-
---
 -- Indexes for table `especie`
 --
 ALTER TABLE `ESPECIE`
   ADD PRIMARY KEY (`COD_ESPECIE`);
-
---
--- Indexes for table `estado`
---
-ALTER TABLE `ESTADO`
-  ADD PRIMARY KEY (`COD_ESTADO`);
 
 --
 -- Indexes for table `foto`
@@ -237,8 +171,7 @@ ALTER TABLE `FOTO`
 -- Indexes for table `instituicao`
 --
 ALTER TABLE `INSTITUICAO`
-  ADD PRIMARY KEY (`COD_INSTITUICAO`),
-  ADD KEY `fk_INSTITUICAO_CIDADE1_idx` (`CIDADE_COD_CIDADE`);
+  ADD PRIMARY KEY (`COD_INSTITUICAO`);
 
 --
 -- Indexes for table `usuario`
@@ -257,22 +190,10 @@ ALTER TABLE `ANIMAL`
   MODIFY `COD_ANIMAL` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `cidade`
---
-ALTER TABLE `CIDADE`
-  MODIFY `COD_CIDADE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
 -- AUTO_INCREMENT for table `especie`
 --
 ALTER TABLE `ESPECIE`
   MODIFY `COD_ESPECIE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `estado`
---
-ALTER TABLE `ESTADO`
-  MODIFY `COD_ESTADO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `foto`
@@ -304,23 +225,10 @@ ALTER TABLE `ANIMAL`
   ADD CONSTRAINT `fk_ANIMAL_INSTITUICAO1` FOREIGN KEY (`INSTITUICAO_COD_INSTITUICAO`) REFERENCES `INSTITUICAO` (`COD_INSTITUICAO`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Limitadores para a tabela `cidade`
---
-ALTER TABLE `CIDADE`
-  ADD CONSTRAINT `fk_CIDADE_ESTADO1` FOREIGN KEY (`ESTADO_COD_ESTADO`) REFERENCES `ESTADO` (`COD_ESTADO`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Limitadores para a tabela `foto`
 --
 ALTER TABLE `FOTO`
   ADD CONSTRAINT `fk_FOTO_ANIMAL1` FOREIGN KEY (`ANIMAL_COD_ANIMAL`) REFERENCES `ANIMAL` (`COD_ANIMAL`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Limitadores para a tabela `instituicao`
---
-ALTER TABLE `INSTITUICAO`
-  ADD CONSTRAINT `fk_INSTITUICAO_CIDADE1` FOREIGN KEY (`CIDADE_COD_CIDADE`) REFERENCES `CIDADE` (`COD_CIDADE`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
