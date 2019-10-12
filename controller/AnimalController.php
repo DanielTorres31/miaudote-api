@@ -214,13 +214,13 @@ class AnimalController {
                 
                 $stmt->execute();
                 
-                $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $animal = $stmt->fetch(PDO::FETCH_OBJ);
             
-                if(empty($lista)){
+                if(empty($animal)){
                     return criaRetornoErro(ERRO_NENHUM_ANIMAL);
                 }
                 
-                return criaRetornoSucessoComDados($lista);
+                return criaRetornoSucessoComDados($animal);
                 
         }
         else {
@@ -240,17 +240,13 @@ class AnimalController {
                 
                 $stmt->execute();
 
-                $animais = array();
+                $animal = $stmt->fetch(PDO::FETCH_OBJ);
         
-                while($row = $stmt->fetch(PDO::FETCH_OBJ)){
-                    $animais[] = $row;
-                }
-                
-                if(empty($animais)){
+                if(empty($animal)){
                     return criaRetornoErro(ERRO_NENHUM_ANIMAL);
                 }
         
-                return criaRetornoSucessoComDados($animais);
+                return criaRetornoSucessoComDados($animal);
 
         }
         
