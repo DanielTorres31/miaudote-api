@@ -146,12 +146,6 @@ class AnimalController {
         
                 $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-                // foreach($lista as $key => $value) {
-                //     return $value['BIN_FOTO'];
-                //     $lista[$key]['BIN_FOTO'] = "data:image/" . $value['TIP_FOTO']
-                //          .$value['BIN_FOTO'];
-                // }
-
                 if(empty($lista)){
                     return criaRetornoErro(ERRO_NENHUM_ANIMAL);
                 }
@@ -178,7 +172,7 @@ class AnimalController {
                 while($row = $stmt->fetch(PDO::FETCH_OBJ)){
                     $animais[] = $row;
                 }
-                
+
                 if(empty($animais)){
                     return criaRetornoErro(ERRO_NENHUM_ANIMAL);
                 }
@@ -201,7 +195,7 @@ class AnimalController {
         $retornarImagem = $_GET['retornarImagem'];
         
         if($retornarImagem == 'T') {
-
+            
             $stmt = $conn->prepare("SELECT A.COD_ANIMAL, A.NOM_ANIMAL, A.IND_IDADE, A.IND_PORTE_ANIMAL, A.IND_SEXO_ANIMAL, A.IND_CASTRADO, A.DAT_CADASTRO, 
                 A.DES_OBSERVACAO, A.DES_VACINA, A.DES_TEMPERAMENTO, I.NOM_INSTITUICAO, E.DES_ESPECIE, C.NOM_CIDADE, ES.NOM_ESTADO, F.NOM_FOTO, F.IND_FOTO_PRINCIPAL, F.TIP_FOTO, F.BIN_FOTO
                 FROM ANIMAL A
@@ -216,24 +210,17 @@ class AnimalController {
                 AND A.COD_ANIMAL = :id
                 ORDER BY A.NOM_ANIMAL");
                 
-                $stmt->bindParam(':id',$id);
+                $stmt->bindParam(':id', $id);
                 
                 $stmt->execute();
-        
+                
                 $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-                foreach($lista as $key => $value) {
-                    $lista[$key]['BIN_FOTO'] = "data:image/" . $value['TIP_FOTO'] . 
-                        ";base64, " . base64_encode($value['BIN_FOTO']);
+                if(empty($lista)){
+                    return criaRetornoErro(ERRO_NENHUM_ANIMAL);
                 }
                 
-                if(empty($lista)){
-                    return array("sucesso"=>false,
-                    "mensagem"=>ERRO_NENHUM_ANIMAL."Erro:".$conn->error,);
-                }
-        
-                return array("sucesso"=>true,
-                    "data"=>$lista);
+                return criaRetornoSucessoComDados($lista);
                 
         }
         else {
@@ -252,7 +239,7 @@ class AnimalController {
                 $stmt->bindParam(':id',$id);
                 
                 $stmt->execute();
-                
+
                 $animais = array();
         
                 while($row = $stmt->fetch(PDO::FETCH_OBJ)){
@@ -260,15 +247,12 @@ class AnimalController {
                 }
                 
                 if(empty($animais)){
-                    return array("sucesso"=>false,
-                    "mensagem"=>ERRO_NENHUM_ANIMAL."Erro:".$conn->error,);
+                    return criaRetornoErro(ERRO_NENHUM_ANIMAL);
                 }
         
-                return array("sucesso"=>true,
-                    "data"=>$animais);
+                return criaRetornoSucessoComDados($animais);
 
         }
-        
         
         $conn = null;
         

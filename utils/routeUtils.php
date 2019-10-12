@@ -2,8 +2,13 @@
 
 function getIdNaRequisicao() {
     $path = $_SERVER['REQUEST_URI'];
+    $path = removeParametrosPath($path);
     $paths = explode("/", $path);
-    return json_encode($paths[count($paths) - 1]);
+    return $paths[count($paths) - 1];
+}
+
+function removeParametrosPath($path) {
+    return explode("?", $path)[0];
 }
 
 function getBody() {

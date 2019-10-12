@@ -28,7 +28,12 @@ switch ($method) {
         break;
     
     case GET:
-        echo json_encode($animalController->buscarTodos());
+        if(isBuscarTodos()) {
+            echo json_encode($animalController->buscarTodos());
+            break;
+        } 
+        $id = getIdNaRequisicao();
+        echo json_encode($animalController->buscarPorId($id));
         break;
     
     case DELETE:
@@ -78,6 +83,13 @@ function validaBody($animal) {
     $validacao->erro = $erro;
     $validacao->mensagens = $mensagens;
     return $validacao;
+}
+
+function isBuscarTodos() {
+    if(getIdNaRequisicao() == 'Animal.php') {
+        return true;
+    }
+    return false;
 }
 
 ?>
