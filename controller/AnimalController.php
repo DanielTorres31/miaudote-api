@@ -36,6 +36,7 @@ class AnimalController {
             
             return criaRetornoSucesso(SUCESSO_ANIMAL_CRIADO);
         } catch(PDOException $e){
+            http_response_code ( 500 );
             return criaRetornoErro(ERRO_ANIMAL_CRIADO);
         }
        
@@ -55,6 +56,7 @@ class AnimalController {
         
             return criaRetornoSucesso(SUCESSO_ANIMAL_EXCLUIDO);
         } catch(PDOException $e) {
+            http_response_code ( 500 );
             return criaRetornoErro(ERRO_ANIMAL_EXCLUIDO);
         }
         
@@ -75,6 +77,7 @@ class AnimalController {
         
             return criaRetornoSucesso(SUCESSO_ANIMAL_ADOTADO);
         } catch (PDOException $e) {
+            http_response_code ( 500 );
             return criaRetornoErro(ERRO_ANIMAL_ADOTADO);
         }
         
@@ -318,6 +321,7 @@ class AnimalController {
         
         $stmt->execute();
         } catch(PDOException $e){
+            http_response_code ( 500 );
             return criaRetornoErro(ERRO_ANIMAL_CRIADO);
         }
        
@@ -337,6 +341,7 @@ class AnimalController {
             
             return $id;
         } catch(PDOException $e){
+            http_response_code ( 500 );
             return criaRetornoErro(ERRO_ANIMAL_CRIADO);
         }
         
@@ -387,6 +392,7 @@ class AnimalController {
             $conn = null;
                 
         } catch(PDOException $e) {
+            http_response_code ( 500 );
             return criaRetornoErro(ERRO_ANIMAL_FILTRO);
         }
         
