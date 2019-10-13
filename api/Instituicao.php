@@ -50,19 +50,19 @@ function validaBody($instituicao) {
     $erro = false;
     $mensagens = [];
     
-    if($instituicao->NOM_INSTITUICAO == null) {
+    if(@$instituicao->NOM_INSTITUICAO == null) {
         $erro = true;
         array_push($mensagens, ERRO_NOME_INSTITUICAO);
     }
-    if($instituicao->DES_EMAIL == null) {
+    if(@$instituicao->DES_EMAIL == null) {
         $erro = true;
         array_push($mensagens, ERRO_EMAIL_OBRIGATORIO);
     }
-    if($instituicao->NUM_TELEFONE == null) {
+    if(@$instituicao->NUM_TELEFONE == null) {
         $erro = true;
         array_push($mensagens, ERRO_NUM_TELEFONE);
     }
-    if($instituicao->IND_TIPO_INSTITUICAO == null) {
+    if(@$instituicao->IND_TIPO_INSTITUICAO == null) {
         $erro = true;
         array_push($mensagens, ERRO_TIPO_OBRIGATORIO);
     }
