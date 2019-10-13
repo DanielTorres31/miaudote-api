@@ -1,9 +1,57 @@
 <?php
 require_once "../controller/InstituicaoController.php";
 require_once "../enum/EnumInstituicao.php";
+require_once "../utils/routeUtils.php";
+require_once "../utils/httpMethodsUtils.php";
+
 header("Content-type: application/json");
 
 $InstituicaoController = new InstituicaoController();
+$method = $_SERVER['REQUEST_METHOD'];
+
+switch ($method) {
+    case PUT:
+        // $id = getIdNaRequisicao();
+        // $body = getBody();
+        // echo 'PUT Animal';
+        break;
+    
+    case POST:
+        // $body = getBody();
+        // $validacao = validaBody($body);
+        // if($validacao->erro){
+        //     echo json_encode($validacao);
+        //     break;
+        // }
+        // $resposta = $animalController->cadastrarAnimal($body);
+        // echo json_encode($resposta);
+        break;
+    
+    case GET:
+        if(isBuscarTodos()) {
+            echo json_encode($InstituicaoController->GetInstituicao(0));
+            break;
+        }
+        $id = getIdNaRequisicao();
+        echo json_encode($InstituicaoController->GetInstituicaoPorId($id));
+        break;
+    
+    case DELETE:
+        // $id = getIdNaRequisicao();
+        // echo json_encode($animalController->excluirAnimal($id));
+        break;
+
+    default:
+        echo http_response_code ( 400 );
+        break;
+}
+
+function isBuscarTodos() {
+    if(getIdNaRequisicao() == 'Instituicao.php') {
+        return true;
+    }
+    return false;
+}
 
 $acao = $_GET["acao"];
 if($acao == "CriarInstituicao"){
@@ -46,3 +94,4 @@ if($acao == "GetCidades"){
     echo json_encode($InstituicaoController->GetCidades());
 }
 
+?>

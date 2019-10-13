@@ -3,6 +3,7 @@ error_reporting(0);
 ini_set("display_errors", 0);
 
 require_once "../enum/EnumInstituicao.php";
+require_once "../utils/retornoUtils.php";
 
 class InstituicaoController {
     
@@ -73,31 +74,6 @@ class InstituicaoController {
     public function AlterarInstituicao($p_InstituicaoPK, $p_NomeInstituicao, $p_Telefone, $p_Email, $p_TipoInstituicao){
         require_once "Conexao.php";
 
-        $erro = false;
-        $mensagem = null;
-        
-        if(empty($p_NomeInstituicao)){
-            $erro = true;
-            $mensagem = ERRO_NOME_INSTITUICAO;
-        }elseif(empty($p_Telefone)){
-            $erro = true;
-            $mensagem = NUM_TELEFONE;
-        }elseif(empty($p_Email)){
-            $erro = true;
-            $mensagem = ERRO_EMAIL_OBRIGATORIO;
-        }elseif(empty($p_TipoInstituicao)){
-            $erro = true;
-            $mensagem = ERRO_TIPO_OBRIGATORIO;
-        }elseif(empty($p_InstituicaoPK)){
-            $erro = true;
-            $mensagem = ERRO_COD_INSTITUICAO;
-        }
-        
-        if($erro){
-            return array("sucesso"=>false,
-            "mensagem"=>$mensagem);
-        }
-        
         try{
             $excluida = InstituicaoExcluida;
             $stmt = $conn->prepare("
@@ -123,64 +99,48 @@ class InstituicaoController {
         $conn = null;
     }
     
-     public function GetInstituicao($p_Pagina){
+    public function GetInstituicao(){
+        
         require_once "Conexao.php";
-        $QTD_Exibida = 5; 
-        
-        if(empty($p_Pagina) || $p_Pagina < 1){
-            $p_Pagina = 1;
-        }
-        
-        
-        $stmt = $conn->prepare("SELECT COUNT(COD_INSTITUICAO) AS QTD_INSTITUICAO FROM INSTITUICAO WHERE IND_EXCLUIDO='N' "); 
+
+        $stmt = $conn->prepare("SELECT INS.COD_INSTITUICAO, INS.NOM_INSTITUICAO, 
+            INS.NUM_TELEFONE, INS.IND_TIPO_INSTITUICAO, INS.DES_EMAIL 
+            FROM INSTITUICAO INS
+            WHERE IND_EXCLUIDO='N' ORDER BY COD_INSTITUICAO DESC");
+
         $stmt->execute();
         
-       while($row = $stmt->fetch(PDO::FETCH_OBJ)){
-           $QTD_Instituicao = $row->QTD_INSTITUICAO;
-       }
-       
-        $Num_Paginas = ceil($QTD_Instituicao/$QTD_Exibida); 
-        
-        $inicio = ($QTD_Exibida*$p_Pagina)-$QTD_Exibida; 
-        $excluido = InstituicaoNaoExcluida;
-        $stmt = $conn->prepare("SELECT INS.COD_INSTITUICAO, INS.NOM_INSTITUICAO, INS.NUM_TELEFONE, INS.IND_TIPO_INSTITUICAO, INS.DES_EMAIL, CID.NOM_CIDADE FROM INSTITUICAO INS INNER JOIN CIDADE CID ON (INS.CIDADE_COD_CIDADE = CID.COD_CIDADE) WHERE IND_EXCLUIDO=:excluido ORDER BY COD_INSTITUICAO DESC LIMIT :inicio, :QtdExibida"); 
-        $stmt->bindParam(':excluido', $excluido);
-        $stmt->bindValue(':inicio', (int) $inicio, PDO::PARAM_INT);
-        $stmt->bindValue(':QtdExibida', (int) $QTD_Exibida, PDO::PARAM_INT);
-        $stmt->execute();
-        
-        $instituicoes = array();
-        while($row = $stmt->fetch(PDO::FETCH_OBJ)){
-             $instituicoes[] = $row;
-       }
+        $instituicoes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if(empty($instituicoes)){
-            return array("sucesso"=>false,
-            "mensagem"=>ERRO_NENHUMA_INSTITUICAO);
+            return criaRetornoErro(ERRO_NENHUMA_INSTITUICAO);
         }
         
-        return array("sucesso"=>true,
-                    "TotalRegistros"=>(int)$QTD_Instituicao,
-                    "QuantidadePaginas"=>$Num_Paginas, 
-                    "data"=>$instituicoes);
+        return criaRetornoSucessoComDados($instituicoes);
                     
         $conn = null;
     }
     
-    public function GetCidades(){
+    public function GetInstituicaoPorId($id){
+        
         require_once "Conexao.php";
 
-        $stmt = $conn->prepare("SELECT COD_CIDADE, NOM_CIDADE FROM CIDADE ORDER BY NOM_CIDADE ASC"); 
+        $stmt = $conn->prepare("SELECT INS.COD_INSTITUICAO, INS.NOM_INSTITUICAO, 
+            INS.NUM_TELEFONE, INS.IND_TIPO_INSTITUICAO, INS.DES_EMAIL 
+            FROM INSTITUICAO INS
+            WHERE IND_EXCLUIDO='N' AND INS.COD_INSTITUICAO = :id");
+        
+        $stmt->bindParam(':id', $id);
+
         $stmt->execute();
         
-        $cidades = array();
+        $instituicao = $stmt->fetch(PDO::FETCH_OBJ);
+
+        if(empty($instituicao)){
+            return criaRetornoErro(ERRO_NENHUMA_INSTITUICAO);
+        }
         
-       while($row = $stmt->fetch(PDO::FETCH_OBJ)){
-           $cidades[] = $row;
-       }
-       
-        return array("sucesso"=>true,
-                    "data"=>$cidades);
+        return criaRetornoSucessoComDados($instituicao);
                     
         $conn = null;
     }
