@@ -100,7 +100,7 @@ CREATE TABLE `INSTITUICAO` (
 --
 
 INSERT INTO `INSTITUICAO` (`COD_INSTITUICAO`, `NOM_INSTITUICAO`, `NUM_TELEFONE`, `IND_TIPO_INSTITUICAO`, `IND_EXCLUIDO`, `DES_EMAIL`) VALUES
-(1, 'Proteger', '3333', 'O', 'S', 'contato@ongproteger.com.br'),
+(1, 'Proteger', '3333', 'O', 'N', 'contato@ongproteger.com.br'),
 (2, 'Joao Junior', '9999', 'P', 'N', 'joaojunin@gmail.com');
 
 -- --------------------------------------------------------
