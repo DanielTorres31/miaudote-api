@@ -50,31 +50,31 @@ function validaBody($animal) {
     $erro = false;
     $mensagens = [];
 
-    if(empty($animal->nome)) {
+    if($animal->nome == null) {
         $erro = true;
         array_push($mensagens, ERRO_NOME_OBRIGATORIO);
     }
-    if(empty($animal->idade)) {
+    if($animal->idade == null) {
         $erro = true;
         array_push($mensagens, ERRO_IDADE_OBRIGATORIO);
     }
-    if(empty($animal->porte)) {
+    if($animal->porte == null) {
         $erro = true;
         array_push($mensagens, ERRO_PORTE_OBRIGATORIO);
     }
-    if(empty($animal->sexo)) {
+    if($animal->sexo == null) {
         $erro = true;
         array_push($mensagens, ERRO_SEXO_OBRIGATORIO);
     }
-    if(empty($animal->instituicao)) {
+    if($animal->instituicao == null) {
         $erro = true;
         array_push($mensagens, ERRO_INSTITUICAO_OBRIGATORIO);
     }
-    if(empty($animal->especie)) {
+    if($animal->especie == null) {
         $erro = true;
         array_push($mensagens, ERRO_ESPECIE_OBRIGATORIO);
     }
-    if(empty($animal->castrado)) {
+    if($animal->castrado == null) {
         $erro = true;
         array_push($mensagens, ERRO_CASTRADO_OBRIGATORIO);
     }
