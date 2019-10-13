@@ -17,22 +17,22 @@ class AnimalController {
                                     VALUES (:nom_animal, :des_observacao, :ind_idade, :ind_porte_animal, :ind_sexo_animal, 
                                     :cod_instituicao, :cod_especie, now(), :ind_castrado, :vacina, :temperamento)");
         
-            $stmt->bindParam (':nom_animal', $animal->nome);
-            $stmt->bindParam (':des_observacao', $animal->observacao);
-            $stmt->bindParam (':ind_idade', $animal->idade);
-            $stmt->bindParam (':ind_porte_animal', $animal->porte);
-            $stmt->bindParam (':ind_sexo_animal', $animal->sexo);
-            $stmt->bindParam (':cod_instituicao', $animal->instituicao);
-            $stmt->bindParam (':cod_especie', $animal->especie);
-            $stmt->bindParam (':ind_castrado', $animal->castrado);
-            $stmt->bindParam (':vacina', $animal->vacinas);
-            $stmt->bindParam (':temperamento', $animal->temperamento);
+            $stmt->bindParam (':nom_animal', $animal->NOM_ANIMAL);
+            $stmt->bindParam (':des_observacao', $animal->DES_OBSERVACAO);
+            $stmt->bindParam (':ind_idade', $animal->IND_IDADE);
+            $stmt->bindParam (':ind_porte_animal', $animal->IND_PORTE_ANIMAL);
+            $stmt->bindParam (':ind_sexo_animal', $animal->IND_SEXO_ANIMAL);
+            $stmt->bindParam (':cod_instituicao', $animal->INSTITUICAO_COD_INSTITUICAO);
+            $stmt->bindParam (':cod_especie', $animal->ESPECIE_COD_ESPECIE);
+            $stmt->bindParam (':ind_castrado', $animal->IND_CASTRADO);
+            $stmt->bindParam (':vacina', $animal->DES_VACINA);
+            $stmt->bindParam (':temperamento', $animal->DES_TEMPERAMENTO);
             
             $stmt->execute();
             
             $id = $this->buscarUltimoId();
             
-            $this->uploadImagem($id, $animal->foto);
+            $this->uploadImagem($id, $animal->BIN_FOTO);
             
             return criaRetornoSucesso(SUCESSO_ANIMAL_CRIADO);
         } catch(PDOException $e){

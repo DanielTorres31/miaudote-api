@@ -49,32 +49,32 @@ switch ($method) {
 function validaBody($animal) {
     $erro = false;
     $mensagens = [];
-
-    if($animal->nome == null) {
+    
+    if(@$animal->NOM_ANIMAL == null) {
         $erro = true;
         array_push($mensagens, ERRO_NOME_OBRIGATORIO);
     }
-    if($animal->idade == null) {
+    if(@$animal->IND_IDADE == null) {
         $erro = true;
         array_push($mensagens, ERRO_IDADE_OBRIGATORIO);
     }
-    if($animal->porte == null) {
+    if(@$animal->IND_PORTE_ANIMAL == null) {
         $erro = true;
         array_push($mensagens, ERRO_PORTE_OBRIGATORIO);
     }
-    if($animal->sexo == null) {
+    if(@$animal->IND_SEXO_ANIMAL == null) {
         $erro = true;
         array_push($mensagens, ERRO_SEXO_OBRIGATORIO);
     }
-    if($animal->instituicao == null) {
+    if(@$animal->INSTITUICAO_COD_INSTITUICAO == null) {
         $erro = true;
         array_push($mensagens, ERRO_INSTITUICAO_OBRIGATORIO);
     }
-    if($animal->especie == null) {
+    if(@$animal->ESPECIE_COD_ESPECIE == null) {
         $erro = true;
         array_push($mensagens, ERRO_ESPECIE_OBRIGATORIO);
     }
-    if($animal->castrado == null) {
+    if(@$animal->IND_CASTRADO == null) {
         $erro = true;
         array_push($mensagens, ERRO_CASTRADO_OBRIGATORIO);
     }
