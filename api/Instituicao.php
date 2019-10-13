@@ -17,14 +17,14 @@ switch ($method) {
         break;
     
     case POST:
-        // $body = getBody();
-        // $validacao = validaBody($body);
-        // if($validacao->erro){
-        //     echo json_encode($validacao);
-        //     break;
-        // }
-        // $resposta = $animalController->cadastrarAnimal($body);
-        // echo json_encode($resposta);
+        $body = getBody();
+        $validacao = validaBody($body);
+        if($validacao->erro){
+            echo json_encode($validacao);
+            break;
+        }
+        $resposta = $InstituicaoController->CriarInstituicao($body);
+        echo json_encode($resposta);
         break;
     
     case GET:
@@ -44,6 +44,33 @@ switch ($method) {
     default:
         echo http_response_code ( 400 );
         break;
+}
+
+function validaBody($instituicao) {
+    $erro = false;
+    $mensagens = [];
+    
+    if($instituicao->NOM_INSTITUICAO == null) {
+        $erro = true;
+        array_push($mensagens, ERRO_NOME_INSTITUICAO);
+    }
+    if($instituicao->DES_EMAIL == null) {
+        $erro = true;
+        array_push($mensagens, ERRO_EMAIL_OBRIGATORIO);
+    }
+    if($instituicao->NUM_TELEFONE == null) {
+        $erro = true;
+        array_push($mensagens, ERRO_NUM_TELEFONE);
+    }
+    if($instituicao->IND_TIPO_INSTITUICAO == null) {
+        $erro = true;
+        array_push($mensagens, ERRO_TIPO_OBRIGATORIO);
+    }
+
+    $validacao = new stdClass();
+    $validacao->erro = $erro;
+    $validacao->mensagens = $mensagens;
+    return $validacao;
 }
 
 function isBuscarTodos() {

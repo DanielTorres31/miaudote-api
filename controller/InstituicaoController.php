@@ -7,46 +7,24 @@ require_once "../utils/retornoUtils.php";
 
 class InstituicaoController {
     
-    public function CriarInstituicao($p_NomeInstituicao, $p_Telefone, $p_Email, $p_TipoInstituicao, $p_Cidade){
+    public function CriarInstituicao($instituicao){
         require_once "Conexao.php";
         $erro = false;
         $mensagem = null;
         
-        if(empty($p_NomeInstituicao)){
-            $erro = true;
-            $mensagem = ERRO_NOME_INSTITUICAO;
-        }elseif(empty($p_Telefone)){
-            $erro = true;
-            $mensagem = NUM_TELEFONE;
-        }elseif(empty($p_Email)){
-            $erro = true;
-            $mensagem = ERRO_EMAIL_OBRIGATORIO;
-        }elseif(empty($p_TipoInstituicao)){
-            $erro = true;
-            $mensagem = ERRO_TIPO_OBRIGATORIO;
-        }
-        
-        if($erro){
-            return array("sucesso"=>false,
-            "mensagem"=>$mensagem);
-        }
-        
         try{
-            $excluida = InstituicaoNaoExcluida;
-            $stmt = $conn->prepare("INSERT INTO `miaudote`.`INSTITUICAO` (`NOM_INSTITUICAO`, `NUM_TELEFONE`, `IND_TIPO_INSTITUICAO`, `DES_EMAIL`, `IND_EXCLUIDO`, `CIDADE_COD_CIDADE`) VALUES (:nome, :telefone, :tipo, :email, :excluido, :cidade)");
-            $stmt->bindParam(':nome', $p_NomeInstituicao);
-            $stmt->bindParam(':telefone', $p_Telefone);
-            $stmt->bindParam(':tipo', $p_TipoInstituicao);
-            $stmt->bindParam(':email', $p_Email);
-            $stmt->bindParam(':excluido', $excluida);
-            $stmt->bindParam(':cidade', $p_Cidade);
+            $stmt = $conn->prepare("INSERT INTO `miaudote`.`INSTITUICAO` (`NOM_INSTITUICAO`, `NUM_TELEFONE`, `IND_TIPO_INSTITUICAO`, `DES_EMAIL`) 
+                VALUES (:nome, :telefone, :tipo, :email)");
+
+            $stmt->bindParam(':nome', $instituicao->NOM_INSTITUICAO);
+            $stmt->bindParam(':telefone', $instituicao->NUM_TELEFONE);
+            $stmt->bindParam(':tipo', $instituicao->IND_TIPO_INSTITUICAO);
+            $stmt->bindParam(':email', $instituicao->DES_EMAIL);
             $stmt->execute();
             
-            return array("mensagem" => SUCESSO_INSTITUICAO_CADASTRADA,
-                        "sucesso" => true);
+            return criaRetornoSucesso(SUCESSO_INSTITUICAO_CADASTRADA);
         }catch(Exception $ex){
-            return array("mensagem" => ERRO_INSTITUICAO_CADASTRADA,
-                        "sucesso" => false);
+            return criaRetornoErro(ERRO_INSTITUICAO_CADASTRADA);
         }
         
         $conn = null;
