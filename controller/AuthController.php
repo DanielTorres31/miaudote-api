@@ -1,33 +1,28 @@
 <?php
 require_once "../enum/EnumAuth.php";
 require_once "../enum/EnumUsuario.php";
+require_once "../utils/retornoUtils.php";
 
 class AuthController {
    
- public function CriarSessao($p_Email, $p_Senha) {
+ public function CriarSessao($login) {
         include "Conexao.php";
         
         $stmt = $conn->prepare("SELECT DES_SENHA, DES_TIPO_USUARIO, IND_EXCLUIDO FROM USUARIO WHERE DES_EMAIL= :Email AND IND_EXCLUIDO='N'");
-        $stmt->bindParam(':Email', $p_Email);
+        $stmt->bindParam(':Email', $login->email);
         $stmt->execute();
         
-        while($row = $stmt->fetch(PDO::FETCH_OBJ)){
-             @$senha = $row->DES_SENHA;
-             @$tipo = $row->DES_TIPO_USUARIO;
-             @$excluido = $row->IND_EXCLUIDO;
-        }
+        $infoUsuario = $stmt->fetch(PDO::FETCH_OBJ);
         
-        if (@$senha == sha1($p_Senha) && $excluido !== UsuarioExcluido) {
+        if (@$infoUsuario->DES_SENHA == sha1($login->senha)) {
             session_start();
-            @$_SESSION["email"] = $p_Email;
-            @$_SESSION["senha"] = $senha;
+            @$_SESSION["email"] = $login->email;
+            @$_SESSION["senha"] = $login->senha;
 
-            return array("mensagem" => SUCESSO_LOGIN,
-                "sucesso" => true,
-                "tipo"=>$tipo);
+            return criaRetornoSucesso(SUCESSO_LOGIN);
         } else {
-            return array("mensagem" => ERRO_LOGIN,
-                "sucesso" => false);
+            http_response_code ( 500 );
+            return criaRetornoErro(ERRO_LOGIN);
         }
         
         $conn = null;
@@ -41,35 +36,27 @@ class AuthController {
         @$senha = $_SESSION["senha"];
         
         if(empty($email) || empty($senha)){
-            return array("sucesso"=>false,
-                        "mensagem"=>SESSAO_INVALIDA);
+            http_response_code ( 500 );
+            return criaRetornoErro(SESSAO_INVALIDA);
         }
         
         $stmt = $conn->prepare("SELECT DES_SENHA, COD_USUARIO, DES_TIPO_USUARIO, NOM_USUARIO, DES_EMAIL, IND_EXCLUIDO FROM USUARIO WHERE DES_EMAIL = :Email");
         $stmt->bindParam(':Email', $email);
         $stmt->execute();
 
-       while($row = $stmt->fetch(PDO::FETCH_OBJ)){
-          $SenhaCorreta = $row->DES_SENHA;
-          $CodigoUsuario = $row->COD_USUARIO;
-          $tipo = $row->DES_TIPO_USUARIO;
-          $email = $row->DES_EMAIL;
-          $nome = $row->NOM_USUARIO;
-          $excluido = $row->IND_EXCLUIDO;
-       }
-
-    
-        if($senha !== $SenhaCorreta || $excluido == UsuarioExcluido){
-            return array("sucesso"=>false,
-                        "mensagem"=>SESSAO_INVALIDA);
+        $infoUsuario = $stmt->fetch(PDO::FETCH_OBJ);
+        
+        if(sha1($senha) !== $infoUsuario->DES_SENHA || $infoUsuario->IND_EXCLUIDO == UsuarioExcluido) {
+            http_response_code ( 500 );
+            return criaRetornoErro(SESSAO_INVALIDA);
         }
         
         return array("sucesso"=>true,
                     "data"=>array(
-                            "NOM_USUARIO"=>$nome,
-                            "DES_EMAIL"=>$email,
-                            "TIPO"=>$tipo,
-                            "CODIGO_USUARIO"=>$CodigoUsuario
+                            "NOM_USUARIO"=>$infoUsuario->NOM_USUARIO,
+                            "DES_EMAIL"=>$infoUsuario->DES_EMAIL,
+                            "TIPO"=>$infoUsuario->DES_TIPO_USUARIO,
+                            "CODIGO_USUARIO"=>$infoUsuario->COD_USUARIO
                         ));
         $conn->close();
     }
@@ -95,6 +82,7 @@ class AuthController {
         }
         
         if($sessao["data"]["tipo"] !== $p_PermissaoNecessaria){
+            http_response_code ( 500 );
             return array("sucesso"=>false,
                         "mensagem"=>ERRO_NAO_POSSUI_PERMISSAO);
         }

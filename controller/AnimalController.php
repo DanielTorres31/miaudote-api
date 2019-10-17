@@ -291,7 +291,7 @@ class AnimalController {
         
         while($row = $stmt->fetch(PDO::FETCH_OBJ)){
              $animais[] = $row;
-      }
+        }
 
         if(empty($animais)){
             return criaRetornoErro(ERRO_ANIMAL_FOTO);

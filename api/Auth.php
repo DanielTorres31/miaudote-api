@@ -1,21 +1,36 @@
 <?php
 require_once "../controller/AuthController.php";
+require_once "../utils/routeUtils.php";
+require_once "../utils/httpMethodsUtils.php";
+
 header("Content-type: application/json");
 
 $AuthController = new AuthController();
-
+$method = $_SERVER['REQUEST_METHOD'];
 $acao = $_GET["acao"];
-if($acao == "CriarSessao"){
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+
+switch ($method) {
+    case POST:
+        if($acao == "CriarSessao"){
+            $login = getBody();
+            echo json_encode($AuthController->CriarSessao($login));
+        }
+        break;
     
-    echo json_encode($AuthController->CriarSessao($email, $senha));
+    case GET:
+        if($acao == "ChecarSessao"){
+            echo json_encode($AuthController->ChecarSessao());
+        }
+        
+        if($acao == "EncerrarSessao"){
+            echo json_encode($AuthController->EncerrarSessao());
+        }
+        break;
+    
+    default:
+        echo http_response_code ( 400 );
+        break;
 }
 
-if($acao == "ChecarSessao"){
-    echo json_encode($AuthController->ChecarSessao());
-}
 
-if($acao == "EncerrarSessao"){
-    echo json_encode($AuthController->EncerrarSessao());
-}
+
