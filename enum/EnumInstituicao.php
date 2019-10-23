@@ -3,8 +3,8 @@
     define("Protetor", "P");
     define("ONG", "O");
     
-    define("InstituicaoNaoExcluida", "N");
-    define("InstituicaoExcluida", "S");
+    define("InstituicaoNaoExcluida", "F");
+    define("InstituicaoExcluida", "T");
     
     define("ERRO_NOME_INSTITUICAO", "O campo nome é de preenchimento obrigatório.");
     define("ERRO_EMAIL_OBRIGATORIO", "O campo e-mail é de preenchimento obrigatório.");

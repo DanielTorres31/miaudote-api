@@ -11,9 +11,14 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
     case PUT:
-        // $id = getIdNaRequisicao();
-        // $body = getBody();
-        // echo 'PUT Animal';
+        $body = getBody();
+        $validacao = validaBody($body);
+        if($validacao->erro){
+            echo json_encode($validacao);
+            break;
+        }
+        $resposta = $InstituicaoController->AlterarInstituicao($body);
+        echo json_encode($resposta);
         break;
     
     case POST:
@@ -37,8 +42,8 @@ switch ($method) {
         break;
     
     case DELETE:
-        // $id = getIdNaRequisicao();
-        // echo json_encode($animalController->excluirAnimal($id));
+        $id = getIdNaRequisicao();
+        echo json_encode($InstituicaoController->ExcluirInstituicao($id));
         break;
 
     default:

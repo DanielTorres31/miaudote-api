@@ -24,6 +24,7 @@ class InstituicaoController {
             
             return criaRetornoSucesso(SUCESSO_INSTITUICAO_CADASTRADA);
         }catch(Exception $ex){
+            http_response_code ( 500 );
             return criaRetornoErro(ERRO_INSTITUICAO_CADASTRADA);
         }
         
@@ -40,16 +41,15 @@ class InstituicaoController {
             $stmt->bindParam(':CodInstituicao', $p_InstituicaoPK);
             $stmt->execute();
             
-            return array("mensagem" => SUCESSO_INSTITUICAO_EXCLUIDA,
-                        "sucesso" => true);
+            return criaRetornoSucesso(SUCESSO_INSTITUICAO_EXCLUIDA);
         }catch(Exception $ex){
-            return array("mensagem" => ERRO_INSTITUICAO_EXCLUIDA,
-                        "sucesso" => false);
+            http_response_code ( 500 );
+            return criaRetornoErro(ERRO_INSTITUICAO_EXCLUIDA);
         }
         $conn = null;
     }
     
-    public function AlterarInstituicao($p_InstituicaoPK, $p_NomeInstituicao, $p_Telefone, $p_Email, $p_TipoInstituicao){
+    public function AlterarInstituicao($instituicao){
         require_once "Conexao.php";
 
         try{
@@ -61,18 +61,17 @@ class InstituicaoController {
             `DES_EMAIL` = :email 
             WHERE `INSTITUICAO`.`COD_INSTITUICAO` = :CodInstituicao");
             
-            $stmt->bindParam(':CodInstituicao', $p_InstituicaoPK);
-            $stmt->bindParam(':nome', $p_NomeInstituicao);
-            $stmt->bindParam(':telefone', $p_Telefone);
-            $stmt->bindParam(':tipo', $p_TipoInstituicao);
-            $stmt->bindParam(':email', $p_Email);
+            $stmt->bindParam(':CodInstituicao', $instituicao->COD_INSTITUICAO);
+            $stmt->bindParam(':nome', $instituicao->NOM_INSTITUICAO);
+            $stmt->bindParam(':telefone', $instituicao->NUM_TELEFONE);
+            $stmt->bindParam(':tipo', $instituicao->IND_TIPO_INSTITUICAO);
+            $stmt->bindParam(':email', $instituicao->DES_EMAIL);
             $stmt->execute();
             
-            return array("sucesso"=>true,
-                "mensagem"=>SUCESSO_ALTERACAO_INSTITUICAO);
+            return criaRetornoSucesso(SUCESSO_ALTERACAO_INSTITUICAO);
         }catch(Exception $ex){
-            return array("sucesso"=>false,
-            "mensagem"=>ERRO_ALTERACAO_INSTITUICAO);
+            http_response_code ( 500 );
+            return criaRetornoErro(ERRO_ALTERACAO_INSTITUICAO);
         }
         $conn = null;
     }
@@ -84,7 +83,7 @@ class InstituicaoController {
         $stmt = $conn->prepare("SELECT INS.COD_INSTITUICAO, INS.NOM_INSTITUICAO, 
             INS.NUM_TELEFONE, INS.IND_TIPO_INSTITUICAO, INS.DES_EMAIL 
             FROM INSTITUICAO INS
-            WHERE IND_EXCLUIDO='N' ORDER BY COD_INSTITUICAO DESC");
+            WHERE IND_EXCLUIDO='F' ORDER BY COD_INSTITUICAO DESC");
 
         $stmt->execute();
         
@@ -106,7 +105,7 @@ class InstituicaoController {
         $stmt = $conn->prepare("SELECT INS.COD_INSTITUICAO, INS.NOM_INSTITUICAO, 
             INS.NUM_TELEFONE, INS.IND_TIPO_INSTITUICAO, INS.DES_EMAIL 
             FROM INSTITUICAO INS
-            WHERE IND_EXCLUIDO='N' AND INS.COD_INSTITUICAO = :id");
+            WHERE IND_EXCLUIDO='F' AND INS.COD_INSTITUICAO = :id");
         
         $stmt->bindParam(':id', $id);
 
