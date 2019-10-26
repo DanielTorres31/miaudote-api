@@ -32,7 +32,9 @@ class AnimalController {
             
             $id = $this->buscarUltimoId();
             
-            $this->uploadImagem($id, $animal->BIN_FOTO);
+            if(@$animal->BIN_FOTO != null) {
+                $this->uploadImagem($id, $animal->BIN_FOTO);
+            }
             
             return criaRetornoSucesso(SUCESSO_ANIMAL_CRIADO);
         } catch(PDOException $e){
