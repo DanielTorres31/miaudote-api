@@ -14,6 +14,7 @@ switch ($method) {
         $body = getBody();
         $validacao = validaBody($body);
         if($validacao->erro){
+            http_response_code ( 400 );
             echo json_encode($validacao);
             break;
         }
@@ -25,6 +26,7 @@ switch ($method) {
         $body = getBody();
         $validacao = validaBody($body);
         if($validacao->erro){
+            http_response_code ( 400 );
             echo json_encode($validacao);
             break;
         }
