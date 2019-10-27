@@ -11,6 +11,7 @@
     define("ERRO_INSTITUICAO_OBRIGATORIO", "A instituição deve ser informada.");
     define("ERRO_ESPECIE_OBRIGATORIO", "A espécie do animal deve ser informada.");
     define("ERRO_CASTRADO_OBRIGATORIO", "O campo Castrado deve ser informado");
+    define("ERRO_FOTO_OBRIGATORIO", "Selecione uma foto para o animal.");
     
     define("SUCESSO_ANIMAL_CRIADO", "Animal cadastrado com sucesso.");
     define("ERRO_ANIMAL_CRIADO", "Erro no cadastro de animal.");

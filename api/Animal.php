@@ -79,6 +79,10 @@ function validaBody($animal) {
         $erro = true;
         array_push($mensagens, ERRO_CASTRADO_OBRIGATORIO);
     }
+    if(@$animal->BIN_FOTO == null) {
+        $erro = true;
+        array_push($mensagens, ERRO_FOTO_OBRIGATORIO);
+    }
 
     $validacao = new stdClass();
     $validacao->erro = $erro;
