@@ -32,9 +32,7 @@ class AnimalController {
             
             $id = $this->buscarUltimoId();
             
-            if(@$animal->BIN_FOTO != null) {
-                $this->uploadImagem($id, $animal->BIN_FOTO);
-            }
+            $this->uploadImagem($id, $animal->BIN_FOTO);
             
             return criaRetornoSucesso(SUCESSO_ANIMAL_CRIADO);
         } catch(PDOException $e){
@@ -100,21 +98,21 @@ class AnimalController {
                                     `DES_TEMPERAMENTO`=:temperamento
                                     WHERE COD_ANIMAL = :id");
             
-            $stmt->bindParam(':id', $animal->id);
-            $stmt->bindParam(':nom_animal', $animal->nome);
-            $stmt->bindParam(':des_observacao', $animal->observacao);
-            $stmt->bindParam(':des_idade', $animal->idade);
-            $stmt->bindParam(':des_porte', $animal->porte);
-            $stmt->bindParam(':des_sexo', $animal->sexo);
-            $stmt->bindParam(':cod_instituicao', $animal->instituicao);
-            $stmt->bindParam(':cod_especie', $animal->especie);
-            $stmt->bindParam(':castrado', $animal->castrado);
-            $stmt->bindParam(':vacina', $animal->vacinas);
-            $stmt->bindParam(':temperamento', $animal->temperamento);
+            $stmt->bindParam(':id', $animal->COD_ANIMAL);
+            $stmt->bindParam(':nom_animal', $animal->NOM_ANIMAL);
+            $stmt->bindParam(':des_observacao', $animal->DES_OBSERVACAO);
+            $stmt->bindParam(':des_idade', $animal->IND_IDADE);
+            $stmt->bindParam(':des_porte', $animal->IND_PORTE_ANIMAL);
+            $stmt->bindParam(':des_sexo', $animal->IND_SEXO_ANIMAL);
+            $stmt->bindParam(':cod_instituicao', $animal->INSTITUICAO_COD_INSTITUICAO);
+            $stmt->bindParam(':cod_especie', $animal->ESPECIE_COD_ESPECIE);
+            $stmt->bindParam(':castrado', $animal->IND_CASTRADO);
+            $stmt->bindParam(':vacina', $animal->DES_VACINA);
+            $stmt->bindParam(':temperamento', $animal->DES_TEMPERAMENTO);
 
             $stmt-> execute();
             
-            $this->uploadImagem($animal->id, $animal->foto);
+            $this->updateImagem($animal->COD_ANIMAL, $animal->BIN_FOTO);
 
             return criaRetornoSucesso(SUCESSO_ANIMAL_ALTERADO);
         } catch (PDOException $e) {
@@ -311,6 +309,32 @@ class AnimalController {
             
             $stmt = $conn -> prepare("INSERT INTO `FOTO`(`TIP_FOTO`, `BIN_FOTO`, `IND_FOTO_PRINCIPAL`, `ANIMAL_COD_ANIMAL`) 
                                 VALUES (:tipo, :binario, 'T', :id)");
+                                
+        $tipo = substr($imagem, 11, 3);
+        if($tipo == "jpe") {
+            $tipo = substr($imagem, 11, 4);    
+        } 
+        
+        $stmt->bindParam(':tipo', $tipo);
+        $stmt->bindParam(':binario', $imagem);
+        $stmt->bindParam(':id', $id);
+        
+        $stmt->execute();
+        } catch(PDOException $e){
+            http_response_code ( 500 );
+            return criaRetornoErro(ERRO_ANIMAL_CRIADO);
+        }
+       
+        $conn = null;
+    
+    }
+
+    public function updateImagem($id, $imagem) {
+        include "Conexao.php";
+        
+        try {
+            
+            $stmt = $conn -> prepare("UPDATE `FOTO` SET `TIP_FOTO` = :tipo, `BIN_FOTO` = :binario WHERE ANIMAL_COD_ANIMAL = :id");
                                 
         $tipo = substr($imagem, 11, 3);
         if($tipo == "jpe") {
