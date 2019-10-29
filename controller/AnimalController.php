@@ -8,7 +8,7 @@ header("Content-type: application/json");
 class AnimalController {
 
     public function cadastrarAnimal($animal) {
-       require_once "Conexao.php";        
+        require_once "Conexao.php";        
         
         try {
             $stmt = $conn->prepare("INSERT INTO ANIMAL(NOM_ANIMAL, DES_OBSERVACAO, IND_IDADE, IND_PORTE_ANIMAL, 
@@ -17,16 +17,16 @@ class AnimalController {
                                     VALUES (:nom_animal, :des_observacao, :ind_idade, :ind_porte_animal, :ind_sexo_animal, 
                                     :cod_instituicao, :cod_especie, now(), :ind_castrado, :vacina, :temperamento)");
         
-            $stmt->bindParam (':nom_animal', $animal->NOM_ANIMAL);
-            $stmt->bindParam (':des_observacao', $animal->DES_OBSERVACAO);
-            $stmt->bindParam (':ind_idade', $animal->IND_IDADE);
-            $stmt->bindParam (':ind_porte_animal', $animal->IND_PORTE_ANIMAL);
-            $stmt->bindParam (':ind_sexo_animal', $animal->IND_SEXO_ANIMAL);
-            $stmt->bindParam (':cod_instituicao', $animal->INSTITUICAO_COD_INSTITUICAO);
-            $stmt->bindParam (':cod_especie', $animal->ESPECIE_COD_ESPECIE);
-            $stmt->bindParam (':ind_castrado', $animal->IND_CASTRADO);
-            $stmt->bindParam (':vacina', $animal->DES_VACINA);
-            $stmt->bindParam (':temperamento', $animal->DES_TEMPERAMENTO);
+            $stmt->bindParam(':nom_animal', $animal->NOM_ANIMAL);
+            $stmt->bindParam(':des_observacao', $animal->DES_OBSERVACAO);
+            $stmt->bindParam(':ind_idade', $animal->IND_IDADE);
+            $stmt->bindParam(':ind_porte_animal', $animal->IND_PORTE_ANIMAL);
+            $stmt->bindParam(':ind_sexo_animal', $animal->IND_SEXO_ANIMAL);
+            $stmt->bindParam(':cod_instituicao', $animal->INSTITUICAO_COD_INSTITUICAO);
+            $stmt->bindParam(':cod_especie', $animal->ESPECIE_COD_ESPECIE);
+            $stmt->bindParam(':ind_castrado', $animal->IND_CASTRADO);
+            $stmt->bindParam(':vacina', $animal->DES_VACINA);
+            $stmt->bindParam(':temperamento', $animal->DES_TEMPERAMENTO);
             
             $stmt->execute();
             

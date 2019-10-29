@@ -3,6 +3,7 @@ require_once "../controller/AnimalController.php";
 require_once "../enum/EnumAnimal.php";
 require_once "../utils/routeUtils.php";
 require_once "../utils/httpMethodsUtils.php";
+require_once "../utils/retornoUtils.php";
 
 header("Content-type: application/json");
 
