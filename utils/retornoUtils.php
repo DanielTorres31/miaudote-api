@@ -16,7 +16,7 @@ function criaRetornoSucessoComDados($dados) {
 
 function criaRetornoErro($mensagem) {
     $erro = new stdClass();
-    $erro->erro = true;
+    $erro->sucesso = false;
     $erro->mensagem = $mensagem;
     return $erro;
 }
