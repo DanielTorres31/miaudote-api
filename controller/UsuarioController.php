@@ -4,56 +4,28 @@ error_reporting(0);
 ini_set("display_errors", 0);
 
 require_once "../enum/EnumUsuario.php";
+require_once "../utils/retornoUtils.php";
 
 class UsuarioController {
 
-    public function CriarUsuario($p_NomeUsuario, $p_EmailUsuario, $p_TipoUsuario, $p_DesSenha, $p_DesSenhaRepetida) {
-        require_once "Usuario.php";
+    public function CriarUsuario($usuario) {
         require_once "Conexao.php";
-
-        $UsuarioController = new UsuarioController();
-
-        $erro = false;
-        $mensagem = null;
-
-        if (empty($p_NomeUsuario)) {
-            $erro = true;
-            $mensagem = ERRO_NOME_OBRIGATORIO;
-        } elseif (empty($p_EmailUsuario)) {
-            $erro = true;
-            $mensagem = ERRO_EMAIL_OBRIGATORIO;
-        } elseif (empty($p_DesSenha)) {
-            $erro = true;
-            $mensagem = ERRO_SENHA_OBRIGATORIA;
-        } elseif ($p_DesSenhaRepetida !== $p_DesSenha) {
-            $erro = true;
-            $mensagem = ERRO_REPETIR_SENHA;
-        } elseif ($UsuarioController->VerificarEmail($p_EmailUsuario)) {
-            $erro = true;
-            $mensagem = ERRO_EMAIL_EXISTE;
-        }
-
-        if ($erro) {
-            return array("sucesso" => false,
-                "mensagem" => $mensagem);
-        }
-
+        
         $Excluido = UsuarioNaoExcluido;
-        $senha = sha1($p_DesSenha);
+        $senhaCriptografada = sha1($usuario->DES_SENHA);
         try {
             $stmt = $conn->prepare("INSERT INTO `USUARIO`(`DES_EMAIL`, `DES_SENHA`, `DES_TIPO_USUARIO`, `NOM_USUARIO`, `IND_EXCLUIDO`) VALUES (:email, :senha, :tipoUsuario, :nomeusuario, :excluido)");
-            $stmt->bindParam(':email', $p_EmailUsuario);
-            $stmt->bindParam(':senha', $senha);
-            $stmt->bindParam(':tipoUsuario', $p_TipoUsuario);
-            $stmt->bindParam(':nomeusuario', $p_NomeUsuario);
+            $stmt->bindParam(':email', $usuario->DES_EMAIL);
+            $stmt->bindParam(':senha', $senhaCriptografada);
+            $stmt->bindParam(':tipoUsuario', $usuario->DES_TIPO_USUARIO);
+            $stmt->bindParam(':nomeusuario', $usuario->NOM_USUARIO);
             $stmt->bindParam(':excluido', $Excluido);
             $stmt->execute();
 
-            return array("mensagem" => SUCESSO_USUARIO_CRIADO,
-                "sucesso" => true);
+            return criaRetornoSucesso(SUCESSO_USUARIO_CRIADO);
         } catch (Exception $ex) {
-            return array("mensagem" => ERRO_USUARIO_CRIADO . "Erro:" . $ex,
-                "sucesso" => false);
+            http_response_code ( 500 );
+            return criaRetornoErro(ERRO_USUARIO_CRIADO);
         }
 
         $conn = null;
@@ -103,20 +75,17 @@ class UsuarioController {
         $conn = null;
     }
 
-    public function VerificarEmail($p_EmailUsuario) {
-        include "Conexao.php";
+    public function isEmailJaExiste($email) {
+        require_once "Conexao.php";
 
         $stmt = $conn->prepare("SELECT COUNT(COD_USUARIO) AS QTD_EMAIL, IND_EXCLUIDO FROM USUARIO WHERE DES_EMAIL=:email AND IND_EXCLUIDO='N'");
-        $stmt->bindParam(':email', $p_EmailUsuario);
+        $stmt->bindParam(':email', $email);
         $stmt->execute();
 
 
-        while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
-            $QTD_Email = $row->QTD_EMAIL;
-            $Excluido = $row->IND_EXCLUIDO;
-        }
-
-        if ($QTD_Email > 0)
+        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        echo json_encode($row);
+        if ($row->$QTD_Email > 0)
             return true;
         else
             return false;
