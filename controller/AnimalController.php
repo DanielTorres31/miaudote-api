@@ -374,11 +374,11 @@ class AnimalController {
         $conn = null;
     }
     
-    public function filtro($nome, $especie, $porte, $sexo, $idade) {
+    public function filtro($filtro) {
         require_once "Conexao.php";
         
         try {
-            $stmt = $conn->prepare("SELECT A.COD_ANIMAL, A.NOM_ANIMAL, A.IND_IDADE, A.IND_PORTE_ANIMAL, A.IND_SEXO_ANIMAL, A.IND_CASTRADO, A.DAT_CADASTRO, 
+            $sql = "SELECT A.COD_ANIMAL, A.INSTITUICAO_COD_INSTITUICAO, A.ESPECIE_COD_ESPECIE, A.NOM_ANIMAL, A.IND_IDADE, A.IND_PORTE_ANIMAL, A.IND_SEXO_ANIMAL, A.IND_CASTRADO, A.DAT_CADASTRO, 
             A.DES_OBSERVACAO, A.DES_VACINA, A.DES_TEMPERAMENTO, I.NOM_INSTITUICAO, E.DES_ESPECIE, F.NOM_FOTO, F.IND_FOTO_PRINCIPAL, F.TIP_FOTO, F.BIN_FOTO
             FROM ANIMAL A
             INNER JOIN FOTO F ON (A.COD_ANIMAL = F.ANIMAL_COD_ANIMAL)
@@ -386,29 +386,56 @@ class AnimalController {
             INNER JOIN ESPECIE E ON (E.COD_ESPECIE = A.ESPECIE_COD_ESPECIE)
             WHERE A.IND_ADOTADO = 'F'
             AND A.IND_EXCLUIDO = 'F'
-            AND F.IND_FOTO_PRINCIPAL = 'T'
-            AND A.NOM_ANIMAL LIKE '%:nome%'
-            AND A.ESPECIE_COD_ESPECIE IN (:especie)
-            AND A.IND_PORTE_ANIMAL IN (:porte)
-            AND A.IND_SEXO_ANIMAL IN (:sexo)
-            AND A.IND_IDADE IN (:idade)
-            ORDER BY A.COD_ANIMAL");
+            AND F.IND_FOTO_PRINCIPAL = 'T' ";
+
+            if(@$filtro->nome != null) {
+                $sql = $sql . "AND A.NOM_ANIMAL LIKE '%' || :nome || '%' ";
+            }
+
+            if(@$filtro->porte != null) {
+                $sql = $sql . "AND A.IND_PORTE_ANIMAL IN (:porte) ";
+            }
+
+            if(@$filtro->especie != null) {
+                $sql = $sql . "AND A.ESPECIE_COD_ESPECIE IN (:especie) ";
+            }
+
+            if(@$filtro->sexo != null) {
+                $sql = $sql . "AND A.IND_SEXO_ANIMAL IN (:sexo) ";
+            }
+
+            if(@$filtro->idade != null) {
+                $sql = $sql . "AND A.IND_IDADE IN (:idade) ";
+            }
+
+            $sql = $sql . "ORDER BY A.COD_ANIMAL";
             
-            $stmt->bindParam(':nome', $nome);
-            $stmt->bindParam(':especie', $especie);
-            $stmt->bindParam(':porte', $porte);
-            $stmt->bindParam(':sexo', $sexo);
-            $stmt->bindParam(':idade', $idade);
+            $stmt = $conn->prepare($sql);
+            
+            if(@$filtro->nome != null) {
+                $stmt->bindParam(':nome', strval($filtro->nome));
+            }
+
+            if(@$filtro->porte != null) {
+                $stmt->bindParam(':porte', $filtro->porte);
+            }
+
+            if(@$filtro->especie != null) {
+                $stmt->bindParam(':especie', $filtro->especie);
+            }
+
+            if(@$filtro->sexo != null) {
+                $stmt->bindParam(':sexo', $filtro->sexo);
+            }
+
+            if(@$filtro->idade != null) {
+                $stmt->bindParam(':idade', $filtro->idade);
+            }
             
             $stmt->execute();
             
             $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-            foreach($lista as $key => $value) {
-                $lista[$key]['BIN_FOTO'] = "data:image/" . $value['TIP_FOTO']
-                        .$value['BIN_FOTO'];
-            }
-            
             if(empty($lista)){
                 return criaRetornoErro(ERRO_NENHUM_ANIMAL);
             }
