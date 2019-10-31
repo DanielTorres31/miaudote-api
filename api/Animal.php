@@ -24,6 +24,12 @@ switch ($method) {
     
     case POST:
         $body = getBody();
+
+        if($_GET['acao'] == 'filtro') {
+            echo json_encode($animalController->filtro($body));
+            break;
+        }
+
         $validacao = validaBody($body);
         if($validacao->erro){
             http_response_code ( 400 );
