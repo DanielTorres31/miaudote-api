@@ -25,7 +25,7 @@ switch ($method) {
     case POST:
         $body = getBody();
 
-        if($_GET['acao'] == 'filtro') {
+        if(isset($_GET['acao']) && $_GET['acao'] == 'filtro') {
             echo json_encode($animalController->filtro($body));
             break;
         }
