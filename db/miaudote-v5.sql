@@ -99,9 +99,9 @@ CREATE TABLE `INSTITUICAO` (
 -- Extraindo dados da tabela `instituicao`
 --
 
-INSERT INTO `INSTITUICAO` (`COD_INSTITUICAO`, `NOM_INSTITUICAO`, `NUM_TELEFONE`, `IND_TIPO_INSTITUICAO`, `IND_EXCLUIDO`, `DES_EMAIL`) VALUES
-(1, 'Proteger', '3333', 'O', 'N', 'contato@ongproteger.com.br'),
-(2, 'Joao Junior', '9999', 'P', 'N', 'joaojunin@gmail.com');
+-- INSERT INTO `INSTITUICAO` (`COD_INSTITUICAO`, `NOM_INSTITUICAO`, `NUM_TELEFONE`, `IND_TIPO_INSTITUICAO`, `IND_EXCLUIDO`, `DES_EMAIL`) VALUES
+-- (1, 'Proteger', '3333', 'O', 'N', 'contato@ongproteger.com.br'),
+-- (2, 'Joao Junior', '9999', 'P', 'N', 'joaojunin@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -118,30 +118,6 @@ CREATE TABLE `USUARIO` (
   `IND_EXCLUIDO` char(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Extraindo dados da tabela `usuario`
---
-/*
-INSERT INTO `USUARIO` (`COD_USUARIO`, `DES_SENHA`, `NOM_USUARIO`, `DES_TIPO_USUARIO`, `DES_EMAIL`, `IND_EXCLUIDO`) VALUES
-(1, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'Henrique', 'A', 'henrique@gmail.com', 'N'),
-(2, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'Nixon', 'C', 'nixonsette@gmail.com', 'S'),
-(3, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Teste', 'C', 'teste@gmail.com', 'S'),
-(4, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'teste', 'C', '123@gmail.com', 'S'),
-(5, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'oi', 'C', '456@gmail.com', 'S'),
-(6, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'Foda', 'C', '789@gmail.com', 'S'),
-(7, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'teste', 'C', 'asddsd@gmail.com', 'S'),
-(8, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'João Júnior', 'C', 'joaojunior@gmail.com', 'S'),
-(9, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'Outro', 'C', '123456@gmail.com', 'S'),
-(10, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'fsdfkdf', 'C', 'ffff@gmail.com', 'S'),
-(11, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'teste@gmail.com', 'C', 'tes3te@gmail.com', 'S'),
-(12, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Nixon', 'C', 'nixonsette@gmail.com', 'S'),
-(13, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '123', 'C', '654@gmail.com', 'S'),
-(14, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'Nixon Sette', 'A', 'nixonsette@gmail.com', 'N'),
-(15, '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'gfgdfg@gmail.com', 'C', '123@gmail.com', 'S'),
-(16, '7b52009b64fd0a2a49e6d8a939753077792b0554', 'ttt', 'C', 'tt@gmail.com', 'S'),
-(17, '51eac6b471a284d3341d8c0c63d0f1a286262a18', 'fdsfdsf@gmail.com', 'C', '456@gmail.com', 'S'),
-(18, '51eac6b471a284d3341d8c0c63d0f1a286262a18', 'fdsdfdf@gmail.com', 'C', '456@gmail.comf', 'S');
-*/
 --
 -- Indexes for dumped tables
 --
