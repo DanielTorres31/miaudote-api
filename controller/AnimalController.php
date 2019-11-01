@@ -389,7 +389,7 @@ class AnimalController {
             AND F.IND_FOTO_PRINCIPAL = 'T' ";
 
             if(@$filtro->nome != null) {
-                $sql = $sql . "AND A.NOM_ANIMAL LIKE '%' || :nome || '%' ";
+                $sql = $sql . "AND A.NOM_ANIMAL LIKE '%{$filtro->nome}%' ";
             }
 
             if(@$filtro->porte != null) {
@@ -409,12 +409,12 @@ class AnimalController {
             }
 
             $sql = $sql . "ORDER BY A.COD_ANIMAL";
-            
+            echo $sql;
             $stmt = $conn->prepare($sql);
             
-            if(@$filtro->nome != null) {
-                $stmt->bindParam(':nome', strval($filtro->nome));
-            }
+            // if(@$filtro->nome != null) {
+            //     $stmt->bindParam(':nome', $filtro->nome);
+            // }
 
             if(@$filtro->porte != null) {
                 $stmt->bindParam(':porte', $filtro->porte);
