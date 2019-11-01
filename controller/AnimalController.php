@@ -409,7 +409,7 @@ class AnimalController {
             }
 
             $sql = $sql . "ORDER BY A.COD_ANIMAL";
-            echo $sql;
+            
             $stmt = $conn->prepare($sql);
             
             // if(@$filtro->nome != null) {
