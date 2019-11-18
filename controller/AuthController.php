@@ -51,16 +51,21 @@ class AuthController {
             return criaRetornoErro(SESSAO_INVALIDA);
         }
         
-        return array("sucesso"=>true,
-                    "data"=>array(
-                            "NOM_USUARIO"=>$infoUsuario->NOM_USUARIO,
-                            "DES_EMAIL"=>$infoUsuario->DES_EMAIL,
-                            "TIPO"=>$infoUsuario->DES_TIPO_USUARIO,
-                            "CODIGO_USUARIO"=>$infoUsuario->COD_USUARIO
-                        ));
-        $conn->close();
+        return criaRetornoSucessoComDados($this->GetDadosSessao($infoUsuario));
+        
+        $conn = null;
     }
     
+    public function GetDadosSessao($infoUsuario) {
+        $sessao = new stdClass();
+        
+        $sessao->COD_USUARIO = $infoUsuario->COD_USUARIO;
+        $sessao->NOM_USUARIO = $infoUsuario->NOM_USUARIO;
+        $sessao->DES_EMAIL = $infoUsuario->DES_EMAIL;
+        $sessao->DES_TIPO_USUARIO = $infoUsuario->DES_TIPO_USUARIO;
+
+        return $sessao;
+    }
     
     public function EncerrarSessao(){
         session_start();
