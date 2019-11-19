@@ -1,6 +1,7 @@
 <?php
 require_once "../enum/EnumAnimal.php";
 require_once "../utils/retornoUtils.php";
+require_once "../utils/logger.php";
 
 header("Content-type: application/json");
 
@@ -37,6 +38,7 @@ class AnimalController {
             return criaRetornoSucesso(SUCESSO_ANIMAL_CRIADO);
         } catch(PDOException $e){
             http_response_code ( 500 );
+            logApp(ERRO_ANIMAL_CRIADO, $e);
             return criaRetornoErro(ERRO_ANIMAL_CRIADO);
         }
        
@@ -57,6 +59,7 @@ class AnimalController {
             return criaRetornoSucesso(SUCESSO_ANIMAL_EXCLUIDO);
         } catch(PDOException $e) {
             http_response_code ( 500 );
+            logApp(ERRO_ANIMAL_EXCLUIDO, $e);
             return criaRetornoErro(ERRO_ANIMAL_EXCLUIDO);
         }
         
@@ -78,6 +81,7 @@ class AnimalController {
             return criaRetornoSucesso(SUCESSO_ANIMAL_ADOTADO);
         } catch (PDOException $e) {
             http_response_code ( 500 );
+            logApp(ERRO_ANIMAL_ADOTADO, $e);
             return criaRetornoErro(ERRO_ANIMAL_ADOTADO);
         }
         
@@ -116,6 +120,8 @@ class AnimalController {
 
             return criaRetornoSucesso(SUCESSO_ANIMAL_ALTERADO);
         } catch (PDOException $e) {
+            http_response_code ( 500 );
+            logApp(ERRO_ANIMAL_ALTERADO, $e);
             return criaRetornoErro(ERRO_ANIMAL_ALTERADO);
         }
          
@@ -322,6 +328,7 @@ class AnimalController {
         $stmt->execute();
         } catch(PDOException $e){
             http_response_code ( 500 );
+            logApp(ERRO_ANIMAL_CRIADO . ' Cadastro foto', $e);
             return criaRetornoErro(ERRO_ANIMAL_CRIADO);
         }
        
@@ -348,6 +355,7 @@ class AnimalController {
         $stmt->execute();
         } catch(PDOException $e){
             http_response_code ( 500 );
+            logApp(ERRO_ANIMAL_CRIADO . ' Update foto', $e);
             return criaRetornoErro(ERRO_ANIMAL_CRIADO);
         }
        
@@ -368,6 +376,7 @@ class AnimalController {
             return $id;
         } catch(PDOException $e){
             http_response_code ( 500 );
+            logApp(ERRO_ANIMAL_CRIADO, $e);
             return criaRetornoErro(ERRO_ANIMAL_CRIADO);
         }
         
@@ -446,6 +455,7 @@ class AnimalController {
                 
         } catch(PDOException $e) {
             http_response_code ( 500 );
+            logApp(ERRO_ANIMAL_FILTRO, $e);
             return criaRetornoErro(ERRO_ANIMAL_FILTRO);
         }
         

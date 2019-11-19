@@ -1,4 +1,7 @@
 <?php
+
+require_once "../utils/logger.php";
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -12,5 +15,6 @@ try {
     }
 catch(PDOException $e)
     {
+        logApp('Erro ao conectar ao banco de dados', $ex);
         echo "Connection failed: " . $e->getMessage();
     }

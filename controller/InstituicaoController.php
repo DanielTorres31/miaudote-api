@@ -4,6 +4,7 @@ ini_set("display_errors", 0);
 
 require_once "../enum/EnumInstituicao.php";
 require_once "../utils/retornoUtils.php";
+require_once "../utils/logger.php";
 
 class InstituicaoController {
     
@@ -25,6 +26,7 @@ class InstituicaoController {
             return criaRetornoSucesso(SUCESSO_INSTITUICAO_CADASTRADA);
         }catch(Exception $ex){
             http_response_code ( 500 );
+            logApp(ERRO_INSTITUICAO_CADASTRADA, $ex);
             return criaRetornoErro(ERRO_INSTITUICAO_CADASTRADA);
         }
         
@@ -44,6 +46,7 @@ class InstituicaoController {
             return criaRetornoSucesso(SUCESSO_INSTITUICAO_EXCLUIDA);
         }catch(Exception $ex){
             http_response_code ( 500 );
+            logApp(ERRO_INSTITUICAO_EXCLUIDA, $ex);
             return criaRetornoErro(ERRO_INSTITUICAO_EXCLUIDA);
         }
         $conn = null;
@@ -71,6 +74,7 @@ class InstituicaoController {
             return criaRetornoSucesso(SUCESSO_ALTERACAO_INSTITUICAO);
         }catch(Exception $ex){
             http_response_code ( 500 );
+            logApp(ERRO_ALTERACAO_INSTITUICAO, $ex);
             return criaRetornoErro(ERRO_ALTERACAO_INSTITUICAO);
         }
         $conn = null;
